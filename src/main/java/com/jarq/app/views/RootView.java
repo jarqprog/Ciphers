@@ -36,6 +36,5 @@ public class RootView extends View {
         System.out.println("    *                                                        *");
         System.out.println("    **********************************************************");
         System.out.println(emptyLines);
-        handlePause();
     }
 }
