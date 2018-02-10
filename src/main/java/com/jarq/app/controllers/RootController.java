@@ -22,23 +22,26 @@ public class RootController {
         shouldQuit = false;
     }
 
-    public void chooseCiphre() {
+    public void run() {
+
+        view.displayIntro();
+        executeMainLoop();
+        view.displayOutro();
+
+    }
+
+    private void chooseCiphre() {
         String message = "Choose ciphre:\n" +
                 "           - r ---> Rot13\n" +
                 "           - p ---> PlayFair\n" +
                 "           - q ---> quit program";
-
         String userChoice = "";
         String[] correctChoices = {"r", "p", "q"};
-
-        while(! DataTool.checkIfElementInArray(correctChoices, userChoice)) {
-
+        while(! DataTool.checkIfElementInArray(correctChoices, userChoice)
+                ) {
             userChoice = view.getUserInput(message);
-
         }
-
         switch(userChoice) {
-
             case("r"):
                 currentCiphre = factory.getInstance(Rot13.class);
                 break;
@@ -51,13 +54,24 @@ public class RootController {
         }
     }
 
-    public void run() {
-        String message = "Type text to encrypt ---> ";
-        String textToEncrypt = view.getUserInput(message);
 
 
-
-
+    private String takeTextToEncrypt() {
+        String message = "\nType text to encrypt ---> ";
+        return view.getUserInput(message);
     }
 
+    private void executeMainLoop() {
+        while(! shouldQuit) {
+            view.clearScreen();
+            chooseCiphre();
+            if(currentCiphre != null) {
+                view.displayMessage("\nYou've choose:\n" + currentCiphre);
+                // should add mode choice
+                String encryptedText = currentCiphre.encrypt(takeTextToEncrypt());
+                view.displayMessage("\n Encrypted text: " + encryptedText);
+                view.handlePause();
+            }
+        }
+    }
 }
