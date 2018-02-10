@@ -22,7 +22,14 @@ public class RootController {
         shouldQuit = false;
     }
 
+    public void executeIntro() {
+        view.clearScreen();
+        view.displayMessage("Enigma app.. Let's encrypt somethig :)");
+
+    }
+
     public void chooseCiphre() {
+        view.clearScreen();
         String message = "Choose ciphre:\n" +
                 "           - r ---> Rot13\n" +
                 "           - p ---> PlayFair\n" +
@@ -36,7 +43,6 @@ public class RootController {
             userChoice = view.getUserInput(message);
 
         }
-
         switch(userChoice) {
 
             case("r"):
@@ -52,12 +58,26 @@ public class RootController {
     }
 
     public void run() {
-        String message = "Type text to encrypt ---> ";
-        String textToEncrypt = view.getUserInput(message);
+
+        view.displayIntro();
+
+    }
+
+    private String takeTextToEncrypt() {
+        String message = "\nType text to encrypt ---> ";
+        return view.getUserInput(message);
+    }
 
 
 
-
+    private void executeMainLoop() {
+        while(! shouldQuit) {
+            chooseCiphre();
+            view.displayMessage("\nYou've choose:\n" + currentCiphre);
+            // should add mode choice
+            String encryptedText = currentCiphre.encrypt(takeTextToEncrypt());
+            view.displayMessage("\n Encrypted text: " + encryptedText);
+        }
     }
 
 }
