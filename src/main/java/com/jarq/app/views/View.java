@@ -14,8 +14,8 @@ public abstract class View {
 
     private static final String ANSI_CLS = "\u001b[2J";
     private static final String ANSI_HOME = "\u001b[H";
-    private String emptyLines = "\n\n";
-    private String space = " ";
+    protected String emptyLines = "\n\n";
+    protected String space = " ";
 
     public void setEmptyLines(String newEmptyLines) {
         emptyLines = newEmptyLines;
