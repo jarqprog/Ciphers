@@ -1,7 +1,7 @@
 package com.jarq.app.views;
 
-import com.jarq.app.ciphers.AbstractCiphre;
-import com.jarq.app.ciphers.Ciphre;
+import com.jarq.app.ciphers.AbstractCipher;
+import com.jarq.app.ciphers.Cipher;
 import com.jarq.app.tools.DataTool;
 
 import java.util.Scanner;
@@ -21,11 +21,11 @@ public abstract class View {
         emptyLines = newEmptyLines;
     }
 
-    public <T extends Ciphre> void displayCiphre(T ciphre) {
+    public <T extends Cipher> void displayCiphre(T ciphre) {
         System.out.println(ciphre);
     }
 
-    public void displayManyCiphres(List<? extends Ciphre> ciphres) {
+    public void displayManyCiphres(List<? extends Cipher> ciphres) {
 
     }
 

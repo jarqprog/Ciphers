@@ -8,6 +8,4 @@ public class App {
         RootController controller = new RootController();
         controller.run();
     }
-
-
 }
