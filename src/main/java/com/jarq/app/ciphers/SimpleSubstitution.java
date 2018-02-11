@@ -1,7 +1,5 @@
 package com.jarq.app.ciphers;
 
-import com.jarq.app.exceptions.InvalidKey;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,12 +20,12 @@ public abstract class SimpleSubstitution extends AbstractCipher {
 
     @Override
     public String getKeyInfo() {
-        return "key should be positive integer number";
+        return "key should be positive integer number not greater than 24 ";
     }
 
     protected String encrypt(String text) {
-        int A_ASCI_INDEX = 65;
-        int Z_ASCI_INDEX = 90;
+        int A_ASCII_INDEX = 65;
+        int Z_ASCII_INDEX = 90;
         int asciFactor;
         boolean isCharLower;
         char[] inputAr = text.toCharArray();
@@ -39,11 +37,11 @@ public abstract class SimpleSubstitution extends AbstractCipher {
             if (matcher.find()) {
                 isCharLower = Character.isLowerCase(character);  // to set flag
                 character = Character.toUpperCase(character);  // to operate only on upper case chars
-                asciFactor = (character + key) - Z_ASCI_INDEX;
+                asciFactor = (character + key) - Z_ASCII_INDEX;
                 if (asciFactor <= 0) {
                     character = (char) (character + key);
                 } else {
-                    character = (char) (A_ASCI_INDEX + abs(asciFactor) - 1); // use factor
+                    character = (char) (A_ASCII_INDEX + abs(asciFactor) - 1); // use factor
                 }
                 if (isCharLower) {
                     character = Character.toLowerCase(character);

@@ -46,8 +46,8 @@ public abstract class AbstractCipher implements Cipher {
     }
 
     public String toString() {
-        return String.format("%s\n%s\n is key required: %s",
-                name, description, String.valueOf(isKeyRequired));
+        return String.format("\n        %s - %s\n\n",
+                name, description);
     }
 
     public boolean isKeyRequired() {

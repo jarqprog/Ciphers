@@ -30,9 +30,9 @@ public class Playfair extends AbstractCipher {
 
     public Playfair() {
         this.name = "Playfair";
-        this.description = "- first cipher to encrypt pairs of letters in cryptologic history.\n"+
-                "The first recorded description of the Playfair cipher was in a document\n"+
-                "signed by Wheatstone on 26 March 1854";
+        this.description = "first cipher to encrypt pairs of letters in cryptologic history.\n"+
+                "        The first recorded description of the Playfair cipher was in a document\n"+
+                "        signed by Wheatstone on 26 March 1854";
         this.isKeyRequired = true;
         this.key = "monarchy";
         this.charList = new char[1];
