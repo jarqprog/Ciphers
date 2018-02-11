@@ -1,0 +1,57 @@
+package com.jarq.app.ciphers;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static java.lang.Math.abs;
+
+public abstract class SimpleSubstitution extends AbstractCiphre {
+
+    private int key;
+
+    public SimpleSubstitution() {
+        isKeyRequider = true;
+        description = "helper cipher";
+    }
+
+    public void setKey(int key) {
+        this.key = key;
+    }
+
+    public int getKey() {
+        return key;
+    }
+
+    protected String encrypt(String text) {
+        int A_ASCI_INDEX = 65;
+        int Z_ASCI_INDEX = 90;
+        int asciFactor;
+        boolean isCharLower;
+        char[] inputAr = text.toCharArray();
+        char[] outputAr = new char[inputAr.length];
+        for(int i=0; i<inputAr.length; i++) {
+            char character = inputAr[i];
+            Pattern regex = Pattern.compile("[a-zA-Z]");
+            Matcher matcher = regex.matcher(String.valueOf(character));
+            if (matcher.find()) {
+                isCharLower = Character.isLowerCase(character);  // to set flag
+                character = Character.toUpperCase(character);  // to operate only on upper case chars
+                asciFactor = (character + key) - Z_ASCI_INDEX;
+                if (asciFactor <= 0) {
+                    character = (char) (character + key);
+                } else {
+                    character = (char) (A_ASCI_INDEX + abs(asciFactor) - 1); // use factor
+                }
+                if (isCharLower) {
+                    character = Character.toLowerCase(character);
+                }
+            }
+            outputAr[i] = character;
+        }
+        return new String(outputAr);
+    }
+
+    protected String decrypt(String text) {
+        return encrypt(text);
+    }
+}
