@@ -18,6 +18,6 @@ public class CiphreFactory extends Factory {
         }  else if (type.getClass().getName().equals(Playfair.class.getClass().getName())) {
             cipher = (T) new Playfair();
         }
-        return null;
+        return cipher;
     }
 }
