@@ -1,5 +1,7 @@
 package com.jarq.app.ciphers;
 
+import com.jarq.app.enums.Procedure;
+
 public abstract class AbstractCiphre implements Ciphre {
 
     protected boolean isKeyRequider;
@@ -12,8 +14,16 @@ public abstract class AbstractCiphre implements Ciphre {
         isKeyRequider = false;
     }
 
-    public abstract String encrypt(String text);
-    public abstract String decrypt(String text);
+    public String execute(String text, String mode) {
+        if (mode.equals(Procedure.ENCRYPTION.getMode())) {
+            return encrypt(text);
+        }
+        return decrypt(text);
+    }
+
+    protected abstract String encrypt(String text);
+
+    protected abstract String decrypt(String text);
 
     public String getName() {
         return name;
