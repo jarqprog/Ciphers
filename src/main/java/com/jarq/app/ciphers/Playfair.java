@@ -36,14 +36,14 @@ public class Playfair extends AbstractCiphre {
         this.indexesPairs = new ArrayList<int[]>();
     }
 
-    public String encrypt(String text) {
+    protected String encrypt(String text) {
         updateTables(text);
         encryptIndexesPairs();
         updateCharList();
         return "ec(" + getOutputText() + ")";
     }
 
-    public String decrypt(String text) {
+    protected  String decrypt(String text) {
         updateTables(text);
         decryptIndexesPairs();
         updateCharList();
@@ -58,27 +58,15 @@ public class Playfair extends AbstractCiphre {
         key = newKey;
     }
 
-    public char[] getCharList() {
-        return charList;
-    }
-
-    public LinkedList<char[]> getKeyMatrix() {
-        return keyMatrix;
-    }
-
-    public ArrayList<int[]> getIndexesPairs() {
-        return indexesPairs;
-    }
-
-    public void setCharList(char[] newTable) {
+    private void setCharList(char[] newTable) {
         charList = newTable;
     }
 
-    public void setKeyMatrix(LinkedList<char[]> newKeyMatrix) {
+    private void setKeyMatrix(LinkedList<char[]> newKeyMatrix) {
         keyMatrix = newKeyMatrix;
     }
 
-    public void setIndexesPairs(ArrayList<int[]> newIndexesPairs) {
+    private void setIndexesPairs(ArrayList<int[]> newIndexesPairs) {
         indexesPairs = newIndexesPairs;
     }
 
