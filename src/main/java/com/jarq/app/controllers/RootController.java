@@ -1,9 +1,6 @@
 package com.jarq.app.controllers;
 
-import com.jarq.app.ciphers.Ceasar;
-import com.jarq.app.ciphers.Cipher;
-import com.jarq.app.ciphers.Playfair;
-import com.jarq.app.ciphers.Rot13;
+import com.jarq.app.ciphers.*;
 import com.jarq.app.enums.Procedure;
 import com.jarq.app.exceptions.InvalidKey;
 import com.jarq.app.factories.CipherFactory;
@@ -20,15 +17,14 @@ public class RootController {
     private String mode;
 
     public RootController() {
-        view = new RootView();
-        factory = new CipherFactory();
-        currentCipher = factory.getInstance(Ceasar.class); // by default
-        shouldQuit = false;
-        mode = Procedure.ENCRYPTION.getMode();
+        this.view = new RootView();
+        this.factory = new CipherFactory();
+        this.currentCipher = factory.getInstance(Rot13.class); // by default
+        this.shouldQuit = false;
+        this.mode = Procedure.ENCRYPTION.getMode(); // by default
     }
 
     public void run() {
-
         view.displayIntro();
         executeMainLoop();
         view.displayOutro();
@@ -50,43 +46,55 @@ public class RootController {
     }
 
     private void executeInnerMenu() {
-        String cipherAndModeInfo = "\n\n\nCurrent cipher: " + currentCipher.toString() + "\n" +
-                            "Current mode: " + mode;
-        String options = "Choose an option:\n" +
-                "           - r ---> Rot13\n" +
-                "           - p ---> PlayFair\n" +
-                "           - c ---> Ceasar\n" +
-                "           - m ---> set mode (current: " + mode + ")\n"+
-                "           - q ---> quit program";
         String userChoice = "";
-        String[] correctChoices = {"r", "p", "c", "m", "q"};
+        String[] correctChoices = {"r", "p", "c", "a", "m", "q"};
         while(! DataTool.checkIfElementInArray(correctChoices, userChoice)) {
+            String cipherAndModeInfo = "\n\n        Current cipher:" + currentCipher.toString() +
+                    "\n        Current mode: " + getMode();
+            if(currentCipher.isKeyRequired()) {
+                cipherAndModeInfo += "\n        This cipher requires a proper key: " + currentCipher.getKeyInfo();
+            }
+            String options = "\n        Choose an option:\n\n" +
+                    "           - r ---> Rot13\n" +
+                    "           - p ---> PlayFair\n" +
+                    "           - c ---> Ceasar\n" +
+                    "           - a ---> Atbash\n" +
+                    "           - m ---> set mode (current: " + getMode() + ")\n"+
+                    "           - q ---> quit program\n";
             view.clearScreen();
             view.displayMessage(cipherAndModeInfo);
             userChoice = view.getUserInput(options);
+            switch(userChoice) {
+                case("r"):
+                    currentCipher = factory.getInstance(Rot13.class);
+                    break;
+                case("p"):
+                    currentCipher = factory.getInstance(Playfair.class);
+                    break;
+                case("c"):
+                    currentCipher = factory.getInstance(Ceasar.class);
+                    break;
+                case("a"):
+                    currentCipher = factory.getInstance(Atbash.class);
+                    break;
+                case("m"):
+                    changeMode();
+                    userChoice = "";
+                    break;
+                case("q"):
+                    shouldQuit = true;
+                    break;
+            }
         }
-        switch(userChoice) {
-            case("r"):
-                currentCipher = factory.getInstance(Rot13.class);
-                break;
-            case("p"):
-                currentCipher = factory.getInstance(Playfair.class);
-                break;
-            case("c"):
-                currentCipher = factory.getInstance(Ceasar.class);
-                break;
-            case("m"):
-                changeMode();
-                break;
-            case("q"):
-                shouldQuit = true;
-                break;
-        }
+
     }
 
     private String takeTextToEncrypt() {
+        view.clearScreen();
+        view.displayMessage("        Current cipher: " + currentCipher.toString());
+        view.displayMessage("        Current mode: " + this.getMode());
 
-        String message = "\nType a text ---> ";
+        String message = "\n        Type a text ---> ";
         return view.getUserInput(message);
     }
 
@@ -95,19 +103,20 @@ public class RootController {
         String userChoice = "";
         String[] correctChoices = {"e", "d", "0"};
         while(! DataTool.checkIfElementInArray(correctChoices, userChoice)) {
-            String message = "\n\n\nCurrent mode ---> " + mode;
+            view.clearScreen();
+            String message = "\n\n        Current mode: " + getMode();
             view.displayMessage(message);
-            userChoice = view.getUserInput("\nSelect mode:\n" +
-                    "   - e (encryption)\n" +
-                    "   - d (decryption)\n" +
-                    "   - 0 stay with current mode");
+            userChoice = view.getUserInput("\n\n        Select mode:\n\n" +
+                    "           - e ---> (encryption)\n" +
+                    "           - d ---> (decryption)\n" +
+                    "           - 0 ---> (stay with current mode)\n");
         }
         switch(userChoice) {
             case("e"):
-                setMode(Procedure.ENCRYPTION.getMode());
+                this.setMode(Procedure.ENCRYPTION.getMode());
                 break;
             case("d"):
-                setMode(Procedure.DECRYPTION.getMode());
+                this.setMode(Procedure.DECRYPTION.getMode());
                 break;
             case("0"):
                 break;
@@ -121,22 +130,26 @@ public class RootController {
         while (!keyIsReady) {
             view.clearScreen();
             System.out.println(currentCipher);
-            String message = "\n\n\nKey info ---> " + currentCipher.getKeyInfo();
+            String message = "\n\n        Key info ---> " + currentCipher.getKeyInfo();
             view.displayMessage(message);
-            newKey = view.getUserInput("\nType a key for cipher ---> ");
+            newKey = view.getUserInput("\n        Type a key for cipher ---> ");
             try {
                 currentCipher.changeKey(newKey);
                 keyIsReady = true;
             } catch (InvalidKey ex) {
                 view.displayMessage(ex.getMessage());
             } catch (NumberFormatException ex) {
-                view.displayMessage("Incorrect key");
+                view.displayMessage("        Incorrect key");
             }
         }
-        view.displayMessage("\nKey is ready");
+        view.displayMessage("\n        Key is ready");
     }
 
     private void setMode(String mode) {
         this.mode = mode;
+    }
+
+    private String getMode() {
+        return this.mode;
     }
 }

@@ -1,9 +1,6 @@
 package com.jarq.app.factories;
 
-import com.jarq.app.ciphers.Ceasar;
-import com.jarq.app.ciphers.Cipher;
-import com.jarq.app.ciphers.Playfair;
-import com.jarq.app.ciphers.Rot13;
+import com.jarq.app.ciphers.*;
 
 public class CipherFactory extends Factory {
 
@@ -17,12 +14,12 @@ public class CipherFactory extends Factory {
 
         if (className.equals(Rot13.class.getName())) {
             cipher = (T) new Rot13();
-
         }  else if (className.equals(Playfair.class.getName())) {
             cipher = (T) new Playfair();
-
         } else if (className.equals(Ceasar.class.getName())) {
             cipher = (T) new Ceasar();
+        } else if (className.equals(Atbash.class.getName())) {
+            cipher = (T) new Atbash();
         }
         return cipher;
     }
