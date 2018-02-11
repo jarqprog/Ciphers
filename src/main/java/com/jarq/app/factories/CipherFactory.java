@@ -5,7 +5,7 @@ import com.jarq.app.ciphers.Cipher;
 import com.jarq.app.ciphers.Playfair;
 import com.jarq.app.ciphers.Rot13;
 
-public class CiphreFactory extends Factory {
+public class CipherFactory extends Factory {
 
 
     @SuppressWarnings("unchecked")

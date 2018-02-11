@@ -1,24 +1,36 @@
 package com.jarq.app.ciphers;
 
 import com.jarq.app.enums.Procedure;
+import com.jarq.app.exceptions.InvalidKey;
 
 public abstract class AbstractCipher implements Cipher {
 
-    protected boolean isKeyRequider;
+    protected boolean isKeyRequired;
     protected String name;
     protected String description;
 
     public AbstractCipher() {
         name = "cipher";
         description = "";
-        isKeyRequider = false;
+        isKeyRequired = false;
     }
 
     public String execute(String text, String mode) {
         if (mode.equals(Procedure.ENCRYPTION.getMode())) {
-            return encrypt(text);
+            return "enc(" + encrypt(text) + ")";
         }
-        return decrypt(text);
+        return "dec(" + decrypt(text) + ")";
+    }
+
+    public String getKeyInfo() {
+        return "not required";
+    }
+
+    public void changeKey(String newKey) throws InvalidKey {
+    }
+
+    public void setIsKeyRequired(boolean b) {
+        this.isKeyRequired = b;
     }
 
     protected abstract String encrypt(String text);
@@ -34,12 +46,12 @@ public abstract class AbstractCipher implements Cipher {
     }
 
     public String toString() {
-        return String.format("cipher: %s\n%s\n is key required: %s",
-                name, description, String.valueOf(isKeyRequider));
+        return String.format("%s\n%s\n is key required: %s",
+                name, description, String.valueOf(isKeyRequired));
     }
 
     public boolean isKeyRequired() {
-        return isKeyRequider;
+        return isKeyRequired;
     }
 
 }

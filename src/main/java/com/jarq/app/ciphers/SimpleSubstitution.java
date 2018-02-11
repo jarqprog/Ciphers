@@ -1,5 +1,7 @@
 package com.jarq.app.ciphers;
 
+import com.jarq.app.exceptions.InvalidKey;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,16 +12,17 @@ public abstract class SimpleSubstitution extends AbstractCipher {
     private int key;
 
     public SimpleSubstitution() {
-        isKeyRequider = true;
+        isKeyRequired = true;
         description = "helper cipher";
     }
 
-    public void setKey(int key) {
-        this.key = key;
+    public void setKey(int newKey) {
+        key = newKey;
     }
 
-    public int getKey() {
-        return key;
+    @Override
+    public String getKeyInfo() {
+        return "key should be positive integer number";
     }
 
     protected String encrypt(String text) {
