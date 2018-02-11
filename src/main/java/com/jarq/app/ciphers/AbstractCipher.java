@@ -2,14 +2,14 @@ package com.jarq.app.ciphers;
 
 import com.jarq.app.enums.Procedure;
 
-public abstract class AbstractCiphre implements Ciphre {
+public abstract class AbstractCipher implements Cipher {
 
     protected boolean isKeyRequider;
     protected String name;
     protected String description;
 
-    public AbstractCiphre() {
-        name = "ciphre";
+    public AbstractCipher() {
+        name = "cipher";
         description = "";
         isKeyRequider = false;
     }
@@ -34,7 +34,7 @@ public abstract class AbstractCiphre implements Ciphre {
     }
 
     public String toString() {
-        return String.format("ciphre: %s\n%s\n is key required: %s",
+        return String.format("cipher: %s\n%s\n is key required: %s",
                 name, description, String.valueOf(isKeyRequider));
     }
 

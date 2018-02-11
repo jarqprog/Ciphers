@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.HashSet;
 
-public class Playfair extends AbstractCiphre {
+public class Playfair extends AbstractCipher {
 
     private final int ROW_INDEX = 0;
     private final int COLUMN_INDEX = 1;

@@ -1,8 +1,9 @@
 package com.jarq.app.controllers;
 
-import com.jarq.app.ciphers.Ciphre;
+import com.jarq.app.ciphers.Cipher;
 import com.jarq.app.ciphers.Playfair;
 import com.jarq.app.ciphers.Rot13;
+import com.jarq.app.enums.Procedure;
 import com.jarq.app.factories.CiphreFactory;
 import com.jarq.app.factories.Factory;
 import com.jarq.app.tools.DataTool;
@@ -12,14 +13,16 @@ public class RootController {
 
     RootView view;
     Factory factory;
-    Ciphre currentCiphre;
+    Cipher currentCipher;
     boolean shouldQuit;
+    String mode;
 
     public RootController() {
         view = new RootView();
         factory = new CiphreFactory();
-        currentCiphre = null;
+        currentCipher = null;
         shouldQuit = false;
+        mode = Procedure.ENCRYPTION.getMode();
     }
 
     public void run() {
@@ -34,19 +37,23 @@ public class RootController {
         String message = "Choose ciphre:\n" +
                 "           - r ---> Rot13\n" +
                 "           - p ---> PlayFair\n" +
+                "           - m ---> change mode (current: " + mode + ")\n"+
                 "           - q ---> quit program";
         String userChoice = "";
-        String[] correctChoices = {"r", "p", "q"};
+        String[] correctChoices = {"r", "p", "m", "q"};
         while(! DataTool.checkIfElementInArray(correctChoices, userChoice)
                 ) {
             userChoice = view.getUserInput(message);
         }
         switch(userChoice) {
             case("r"):
-                currentCiphre = factory.getInstance(Rot13.class);
+                currentCipher = factory.getInstance(Rot13.class);
                 break;
             case("p"):
-                currentCiphre = factory.getInstance(Playfair.class);
+                currentCipher = factory.getInstance(Playfair.class);
+                break;
+            case("m"):
+                changeMode();
                 break;
             case("q"):
                 shouldQuit = true;
@@ -61,15 +68,23 @@ public class RootController {
         return view.getUserInput(message);
     }
 
+    private void changeMode() {
+
+
+    }
+
     private void executeMainLoop() {
         while(! shouldQuit) {
             view.clearScreen();
             chooseCiphre();
-            if(currentCiphre != null) {
-                view.displayMessage("\nYou've choose:\n" + currentCiphre);
+            if(currentCipher != null) {
+                view.displayMessage("\nYou've choose:\n" + currentCipher);
                 // should add mode choice
-                String encryptedText = currentCiphre.encrypt(takeTextToEncrypt());
+                String encryptedText = currentCipher.execute(takeTextToEncrypt(), Procedure.ENCRYPTION.getMode());
                 view.displayMessage("\n Encrypted text: " + encryptedText);
+                view.handlePause();
+                String decryptedText = currentCipher.execute(encryptedText, Procedure.DECRYPTION.getMode());
+                view.displayMessage("\n Decrypted text: " + decryptedText);
                 view.handlePause();
             }
         }

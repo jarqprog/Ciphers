@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 import static java.lang.Math.abs;
 
-public abstract class SimpleSubstitution extends AbstractCiphre {
+public abstract class SimpleSubstitution extends AbstractCipher {
 
     private int key;
 

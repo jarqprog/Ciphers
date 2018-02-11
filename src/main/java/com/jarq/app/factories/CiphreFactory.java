@@ -1,6 +1,6 @@
 package com.jarq.app.factories;
 
-import com.jarq.app.ciphers.Ciphre;
+import com.jarq.app.ciphers.Cipher;
 import com.jarq.app.ciphers.Playfair;
 import com.jarq.app.ciphers.Rot13;
 
@@ -8,7 +8,7 @@ public class CiphreFactory extends Factory {
 
 
     @SuppressWarnings("unchecked")
-    public <T extends Ciphre> T getInstance(Class<T> type) {
+    public <T extends Cipher> T getInstance(Class<T> type) {
 
         T cipher = null;
 
