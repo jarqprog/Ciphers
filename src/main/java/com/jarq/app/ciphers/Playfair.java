@@ -1,12 +1,16 @@
 package com.jarq.app.ciphers;
 
+import com.jarq.app.exceptions.InvalidKey;
+
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class Playfair extends AbstractCiphre {
+public class Playfair extends AbstractCipher {
 
     private final int ROW_INDEX = 0;
     private final int COLUMN_INDEX = 1;
@@ -25,60 +29,60 @@ public class Playfair extends AbstractCiphre {
     private ArrayList<int[]> indexesPairs;
 
     public Playfair() {
-        name = "Playfair";
-        description = "- first cipher to encrypt pairs of letters in cryptologic history.\n"+
-                "The first recorded description of the Playfair cipher was in a document\n"+
-                "signed by Wheatstone on 26 March 1854";
-        isKeyRequider = true;
+        this.name = "Playfair";
+        this.description = "first cipher to encrypt pairs of letters in cryptologic history.\n"+
+                "        The first recorded description of the Playfair cipher was in a document\n"+
+                "        signed by Wheatstone on 26 March 1854";
+        this.isKeyRequired = true;
         this.key = "monarchy";
         this.charList = new char[1];
         this.keyMatrix = new LinkedList<>();
         this.indexesPairs = new ArrayList<int[]>();
     }
 
-    public String encrypt(String text) {
-        updateTables(text);
-        encryptIndexesPairs();
-        updateCharList();
-        return "ec(" + getOutputText() + ")";
-    }
-
-    public String decrypt(String text) {
-        updateTables(text);
-        decryptIndexesPairs();
-        updateCharList();
-        return "dec(" + getOutputText() + ")";
-    }
-
-    public String getName() {
-        return name;
+    @Override
+    public String getKeyInfo() {
+        return "key should be word";
     }
 
     public void setKey(String newKey) {
-        key = newKey;
+        this.key = key;
     }
 
-    public char[] getCharList() {
-        return charList;
+    @Override
+    public void changeKey(String newKey) throws InvalidKey {
+        Pattern regex = Pattern.compile("[a-zA-Z]+");
+        Matcher matcher = regex.matcher(newKey);
+        if (matcher.find()){
+            this.setKey(newKey);
+        } else {
+            throw new InvalidKey();
+        }
     }
 
-    public LinkedList<char[]> getKeyMatrix() {
-        return keyMatrix;
+    protected String encrypt(String text) {
+        updateTables(text);
+        encryptIndexesPairs();
+        updateCharList();
+        return getOutputText();
     }
 
-    public ArrayList<int[]> getIndexesPairs() {
-        return indexesPairs;
+    protected  String decrypt(String text) {
+        updateTables(text);
+        decryptIndexesPairs();
+        updateCharList();
+        return getOutputText();
     }
 
-    public void setCharList(char[] newTable) {
+    private void setCharList(char[] newTable) {
         charList = newTable;
     }
 
-    public void setKeyMatrix(LinkedList<char[]> newKeyMatrix) {
+    private void setKeyMatrix(LinkedList<char[]> newKeyMatrix) {
         keyMatrix = newKeyMatrix;
     }
 
-    public void setIndexesPairs(ArrayList<int[]> newIndexesPairs) {
+    private void setIndexesPairs(ArrayList<int[]> newIndexesPairs) {
         indexesPairs = newIndexesPairs;
     }
 
