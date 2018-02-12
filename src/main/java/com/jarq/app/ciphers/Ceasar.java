@@ -18,12 +18,17 @@ public class Ceasar extends SimpleSubstitution {
     }
 
     @Override
+    public String getKeyInfo() {
+        return "key should be positive integer number not greater than 25 ";
+    }
+
+    @Override
     public void changeKey(String newKey) throws InvalidKey, NumberFormatException {
         Pattern regex = Pattern.compile("[0-9]+");
         Matcher matcher = regex.matcher(newKey);
         if (matcher.find()){
             int key = abs(Integer.parseInt(newKey));
-            if(key > 24) {
+            if(key > 25) {
                 throw new InvalidKey();
             }
             this.setKey(key);
