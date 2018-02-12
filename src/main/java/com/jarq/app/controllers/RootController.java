@@ -38,7 +38,7 @@ public class RootController {
                 if(currentCipher.isKeyRequired()){
                     changeKey();
                 }
-                String encryptedText = currentCipher.execute(takeTextToEncrypt(), Procedure.ENCRYPTION.getMode());
+                String encryptedText = currentCipher.execute(takeTextToEncrypt(), getMode());
                 view.displayMessage("\n Cipher output: " + encryptedText);
                 view.handlePause();
             }
@@ -86,7 +86,6 @@ public class RootController {
                     break;
             }
         }
-
     }
 
     private String takeTextToEncrypt() {
